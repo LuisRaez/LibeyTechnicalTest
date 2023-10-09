@@ -12,12 +12,18 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Application
         }
         public void Create(UserUpdateorCreateCommand command)
         {
-            throw new NotImplementedException();
+            LibeyUser lUser = new LibeyUser(command.DocumentNumber,command.DocumentTypeId,command.Name,command.FathersLastName,
+                command.MothersLastName,command.Address,command.UbigeoCode,command.Phone,command.Email,command.Password);               
+            _repository.Create(lUser);
         }
         public LibeyUserResponse FindResponse(string documentNumber)
         {
             var row = _repository.FindResponse(documentNumber);
             return row;
+        }
+        public List<LibeyUserResponse> FindAll()
+        {
+            return _repository.FindAll();
         }
     }
 }

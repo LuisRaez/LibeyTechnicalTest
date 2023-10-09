@@ -1,5 +1,6 @@
 import swal from 'sweetalert2';
 import { Component, OnInit } from '@angular/core';
+
 @Component({
   selector: 'app-usermaintenance',
   templateUrl: './usermaintenance.component.html',

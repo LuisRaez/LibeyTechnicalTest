@@ -1,4 +1,5 @@
-﻿using LibeyTechnicalTestDomain.EFCore;
+﻿using System.Linq;
+using LibeyTechnicalTestDomain.EFCore;
 using LibeyTechnicalTestDomain.LibeyUserAggregate.Application.DTO;
 using LibeyTechnicalTestDomain.LibeyUserAggregate.Application.Interfaces;
 using LibeyTechnicalTestDomain.LibeyUserAggregate.Domain;
@@ -36,6 +37,35 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Infrastructure
             var list = q.ToList();
             if (list.Any()) return list.First();
             else return new LibeyUserResponse();
+        }
+
+        public List<LibeyUserResponse> FindAll()
+        {
+            return (from libeyUser in _context.LibeyUsers
+                    select new LibeyUserResponse()
+                    {
+                        DocumentNumber = libeyUser.DocumentNumber,
+                        Active = libeyUser.Active,
+                        Address = libeyUser.Address,
+                        DocumentTypeId = libeyUser.DocumentTypeId,
+                        Email = libeyUser.Email,
+                        FathersLastName = libeyUser.FathersLastName,
+                        MothersLastName = libeyUser.MothersLastName,
+                        Name = libeyUser.Name,
+                        Password = libeyUser.Password,
+                        Phone = libeyUser.Phone
+                    }).ToList();
+
+        }
+
+        public void Update(LibeyUser libeyUser)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(string DocumentNumber)
+        {
+            throw new NotImplementedException();
         }
     }
 }

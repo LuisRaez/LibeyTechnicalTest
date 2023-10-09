@@ -1,0 +1,79 @@
+<form #userForm="ngForm" style="padding-right: 5%; padding-left: 5%; ">
+	<div class="card" style="width: 100%;margin-top: 2rem;background-color:#edf2f6;border-radius: 10px; height: 70em; " >
+		<div class="card-header"><b>Listado de usuarios</b></div>
+		<div class="card mb-4 mt-4">
+			<ul class="nav">
+				<button type="button" class="btn-toolbar">
+					<a href="/user/maintenance" class="nav-link text-toolbar">
+						<span>
+							<svg width="20" height="17" viewBox="0 0 14 14" fill="none">
+								<path
+									d="M11.6667 1H2.33333C1.59695 1 1 1.59695 1 2.33333V11.6667C1 12.403 1.59695 13 2.33333 13H11.6667C12.403 13 13 12.403 13 11.6667V2.33333C13 1.59695 12.403 1 11.6667 1Z"
+									stroke="#38E8C6"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								/>
+								<path d="M1 5H13" stroke="#38E8C6" stroke-linecap="round" stroke-linejoin="round" />
+								<path d="M5 13V5" stroke="#38E8C6" stroke-linecap="round" stroke-linejoin="round" />
+							</svg>
+						</span>
+						Crear Nuevo Usuario
+					</a>
+				</button>
+				
+				<button type="button" class="btn-toolbar">
+					<a href="user/card" class="nav-link text-toolbar">
+						<span>
+							<svg width="20" height="17" viewBox="0 0 14 14" fill="none">
+								<path
+									d="M11.6667 1H2.33333C1.59695 1 1 1.59695 1 2.33333V11.6667C1 12.403 1.59695 13 2.33333 13H11.6667C12.403 13 13 12.403 13 11.6667V2.33333C13 1.59695 12.403 1 11.6667 1Z"
+									stroke="#38E8C6"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								/>
+								<path d="M1 5H13" stroke="#38E8C6" stroke-linecap="round" stroke-linejoin="round" />
+								<path d="M5 13V5" stroke="#38E8C6" stroke-linecap="round" stroke-linejoin="round" />
+							</svg>
+						</span>
+						Volver
+					</a>
+				</button>
+			</ul>
+		</div>
+		<div class="card-body">
+            
+            <table class="table mt-2 table-bordered">
+                <thead class="table-primary">
+                <tr>
+                    <th>DNI</th>
+                    <th>Nombre</th>
+                    <th>Apellido Paterno</th>
+                    <th>Apellido Materno</th>
+                    <th>Dirección</th>
+                    <th>Telefono</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let user of listUsers">
+                    <td>{{user.documentNumber}}</td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.fathersLastName}}</td>
+                    <td>{{user.mothersLastName}}</td>
+                    <td>{{user.address}}</td>
+                    <td>{{user.phone}}</td>
+                    <td>{{user.email}}</td>
+
+                
+                    <td>
+                        <!-- <a [routerLink]="['/user/maintenance', 'edit', user.documentNumber]" class="btn btn-warning">Editar</a> -->
+                        &nbsp;
+                        <button (click)="delete(user.documentNumber)" class="btn btn-danger">Eliminar</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+	</div>	
+</form>

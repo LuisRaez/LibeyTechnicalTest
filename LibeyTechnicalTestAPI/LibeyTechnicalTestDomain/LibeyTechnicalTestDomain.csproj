@@ -11,4 +11,20 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="DirectionAggregate\" />
+    <None Remove="DirectionAggregate\Application\" />
+    <None Remove="DirectionAggregate\Domain\" />
+    <None Remove="DirectionAggregate\Infrastructure\" />
+    <None Remove="DirectionAggregate\Application\DTO\" />
+    <None Remove="DirectionAggregate\Application\Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DirectionAggregate\" />
+    <Folder Include="DirectionAggregate\Application\" />
+    <Folder Include="DirectionAggregate\Domain\" />
+    <Folder Include="DirectionAggregate\Infrastructure\" />
+    <Folder Include="DirectionAggregate\Application\DTO\" />
+    <Folder Include="DirectionAggregate\Application\Interfaces\" />
+  </ItemGroup>
 </Project>

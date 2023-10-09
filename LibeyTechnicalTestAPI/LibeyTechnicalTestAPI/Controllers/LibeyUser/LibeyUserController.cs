@@ -12,6 +12,12 @@ namespace LibeyTechnicalTestAPI.Controllers.LibeyUser
         {
             _aggregate = aggregate;
         }
+        [HttpGet]        
+        public IActionResult FindAll()
+        {
+            var row = _aggregate.FindAll();
+            return Ok(row);
+        }
         [HttpGet]
         [Route("{documentNumber}")]
         public IActionResult FindResponse(string documentNumber)
@@ -23,7 +29,19 @@ namespace LibeyTechnicalTestAPI.Controllers.LibeyUser
         public IActionResult Create(UserUpdateorCreateCommand command)
         {
              _aggregate.Create(command);
-            return Ok(true);
+            return Ok();
+            
+        }
+        [HttpPut]
+        public IActionResult Update(UserUpdateorCreateCommand command)
+        {
+            _aggregate.Create(command);
+            return Ok();
+
         }
     }
 }
+
+
+
+
