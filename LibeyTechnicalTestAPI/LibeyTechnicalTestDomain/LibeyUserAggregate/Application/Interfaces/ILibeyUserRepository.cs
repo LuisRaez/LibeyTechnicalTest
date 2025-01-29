@@ -6,6 +6,9 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Application.Interfaces
     public interface ILibeyUserRepository
     {
         LibeyUserResponse FindResponse(string documentNumber);
-        void Create(LibeyUser libeyUser);
+        bool Create(LibeyUser libeyUser);
+        bool Update(string documentNumber, LibeyUserResponse libeyUser);
+        bool Delete(string documentNumber);
+        List<LibeyUserResponse> FindAll();
     }
 }

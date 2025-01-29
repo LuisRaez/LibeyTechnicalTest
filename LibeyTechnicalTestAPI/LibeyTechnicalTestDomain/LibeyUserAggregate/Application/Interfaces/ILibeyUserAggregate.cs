@@ -4,6 +4,9 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Application.Interfaces
     public interface ILibeyUserAggregate
     {
         LibeyUserResponse FindResponse(string documentNumber);
-        void Create(UserUpdateorCreateCommand command);
+        bool Create(UserUpdateorCreateCommand command);
+        bool Update(string documentNumber, LibeyUserResponse userResponse);
+        bool Delete(string documentNumber);
+        List<LibeyUserResponse> FindAll();
     }
 }

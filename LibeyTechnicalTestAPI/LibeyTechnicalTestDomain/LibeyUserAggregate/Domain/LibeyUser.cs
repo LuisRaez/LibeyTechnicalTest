@@ -28,5 +28,23 @@
             Password = password;
             Active = true;
         }
+
+        public void Deactivate()
+        {
+            Active = false;
+        }
+
+        public void Update(string name, string fathersLastName, string mothersLastName, string address, string ubigeoCode, string phone, string email, string password, bool active)
+        {
+            Name = name;
+            FathersLastName = fathersLastName;
+            MothersLastName = mothersLastName;
+            Address = address;
+            UbigeoCode = ubigeoCode;
+            Phone = phone;
+            Email = email;
+            Password = password;
+            Active = active;
+        }
     }
 }
