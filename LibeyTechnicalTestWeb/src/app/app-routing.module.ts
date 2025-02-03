@@ -6,7 +6,7 @@ import { UsermaintenanceComponent } from "./User/user/usermaintenance/usermainte
 const routes: Routes = [
 	{
 		path: "",
-		redirectTo: "/user",
+		redirectTo: "/user/card",
 		pathMatch: "full",
 	},
 	{

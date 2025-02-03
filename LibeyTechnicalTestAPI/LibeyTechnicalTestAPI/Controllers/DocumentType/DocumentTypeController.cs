@@ -48,7 +48,7 @@ namespace LibeyTechnicalTestAPI.Controllers.DocumentType
                     return NotFound(new { message = "No se encontro el tipo de documento." });
                 }
 
-                return Ok(new { Datos = rows, message = "Tipo de Documento obtenido correctamente." });
+                    return Ok(new { Datos = rows, message = "Tipo de Documento obtenido correctamente." });
             }
             catch (Exception ex)
             {

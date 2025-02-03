@@ -25,7 +25,7 @@ namespace LibeyTechnicalTestAPI.Controllers.LibeyUser
                     return NotFound(new { message="El Usuario no fue encontrado." });
                 
                 
-                return Ok(new { Datos= row, message="Asunto obtenido correctamente." });
+                return Ok(new { Datos= row, message="Usuario     obtenido correctamente." });
             }
             catch (Exception ex)
             {
@@ -43,7 +43,7 @@ namespace LibeyTechnicalTestAPI.Controllers.LibeyUser
             {
                 bool respuesta = _aggregate.Create(command);
 
-                if (!respuesta)
+                    if (!respuesta)
                 {
                     return BadRequest("No se pudo crear el usuario.");
                 }
