@@ -55,7 +55,7 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Application
 
                 if (user == null)
                 {
-                    return false;
+                    return false; 
                 }
 
                 return _repository.Delete(documentNumber);

@@ -12,4 +12,6 @@ export class LibeyUserService {
 		const uri = `${environment.pathLibeyTechnicalTest}LibeyUser/${documentNumber}`;
 		return this.http.get<LibeyUser>(uri);
 	}
+
+	
 }

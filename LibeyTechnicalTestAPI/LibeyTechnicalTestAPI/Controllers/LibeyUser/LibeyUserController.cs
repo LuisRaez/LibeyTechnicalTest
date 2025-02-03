@@ -21,25 +21,25 @@ namespace LibeyTechnicalTestAPI.Controllers.LibeyUser
             {
                 var row = _aggregate.FindResponse(documentNumber);
 
-                if (row == null)
-                    return NotFound(new { message = "El Usuario no fue encontrado." });
-
-
-                return Ok(new { Datos = row, message = "Asunto obtenido correctamente." });
+                if (row.DocumentNumber == null)
+                    return NotFound(new { message="El Usuario no fue encontrado." });
+                
+                
+                return Ok(new { Datos= row, message="Asunto obtenido correctamente." });
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Ocurrió un errror inesperado.", error = ex });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Ocurrió un errror inesperado.", error= ex });
             }
-
+            
         }
 
 
-        [HttpPost]
+        [HttpPost]       
         public IActionResult Create(UserUpdateorCreateCommand command)
         {
-
-            try
+             
+            try 
             {
                 bool respuesta = _aggregate.Create(command);
 
@@ -49,7 +49,7 @@ namespace LibeyTechnicalTestAPI.Controllers.LibeyUser
                 }
 
                 return Ok("Usuario creado correctamente.");
-
+                
             }
             catch (Exception ex)
             {
