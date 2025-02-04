@@ -38,11 +38,5 @@ namespace LibeyTechnicalTestDomain.RegionAggregate.Infrastructure
 
             return users.ToList();
         }
-
-
-
-
-
-
     }
 }

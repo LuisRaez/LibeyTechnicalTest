@@ -1,5 +1,4 @@
 export interface DocumentType {
-    DocumentTypeId: number;
-    DocumentTypeDescription: string;
-  }
-  
+  DocumentTypeId: number;
+  DocumentTypeDescription: string;
+}

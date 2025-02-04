@@ -14,6 +14,7 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Infrastructure
         }
         public bool Create(LibeyUser libeyUser)
         {
+            var usuario = FindResponse(libeyUser.DocumentNumber);
             _context.LibeyUsers.Add(libeyUser);
             _context.SaveChanges();
             return true;
@@ -32,6 +33,9 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Infrastructure
                         Email = libeyUser.Email,
                         FathersLastName = libeyUser.FathersLastName,
                         MothersLastName = libeyUser.MothersLastName,
+                        RegionCode = libeyUser.UbigeoCode.PadRight(2).Substring(0, 2),
+                        ProvinceCode = libeyUser.UbigeoCode.PadRight(4).Substring(0, 4),
+                        UbigeoCode = libeyUser.UbigeoCode,
                         Name = libeyUser.Name,
                         Password = libeyUser.Password,
                         Phone = libeyUser.Phone
@@ -91,6 +95,9 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Infrastructure
                             Email = libeyUser.Email,
                             FathersLastName = libeyUser.FathersLastName,
                             MothersLastName = libeyUser.MothersLastName,
+                            RegionCode = libeyUser.UbigeoCode.PadRight(2).Substring(0, 2),
+                            ProvinceCode = libeyUser.UbigeoCode.PadRight(4).Substring(0, 4),
+                            UbigeoCode =libeyUser.UbigeoCode,
                             Name = libeyUser.Name,
                             Password = libeyUser.Password,
                             Phone = libeyUser.Phone

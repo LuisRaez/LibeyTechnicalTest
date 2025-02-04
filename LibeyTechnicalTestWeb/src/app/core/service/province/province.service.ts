@@ -9,7 +9,7 @@ import { environment } from "../../../../environments/environment";
 export class ProvinceService {
   private baseUrl = `${environment.pathLibeyTechnicalTest}api/Province/`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   FindResponse(ProvinceId: string): Observable<any> {
     const uri = `${this.baseUrl}FindResponse?ProvinceId=${ProvinceId}`;

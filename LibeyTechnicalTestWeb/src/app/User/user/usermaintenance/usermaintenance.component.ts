@@ -3,7 +3,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import swal from 'sweetalert2';
 import { LibeyUserService } from 'src/app/core/service/libeyuser/libeyuser.service';
 import { UbigeoService } from 'src/app/core/service/ubigeo/ubigeo.service';
-import { LibeyUser } from 'src/app/entities/libeyuser';
 import { Region } from 'src/app/entities/region';
 import { Ubigeo } from 'src/app/entities/ubigeo';
 import { Province } from 'src/app/entities/province';
@@ -12,7 +11,7 @@ import { DocumenttypeService } from 'src/app/core/service/documenttype/documentt
 import { RegionService } from 'src/app/core/service/region/region.service';
 import { ProvinceService } from 'src/app/core/service/province/province.service';
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-usermaintenance',
@@ -33,6 +32,9 @@ export class UsermaintenanceComponent implements OnInit {
   selectedProvinceCode: string = '';
   selectedUbigeoCode: string = '';
 
+  isEditMode: boolean = false;
+  documentNumber: string | null = null;
+
   constructor(
     private fb: FormBuilder,
     private libeyUserService: LibeyUserService,
@@ -40,33 +42,66 @@ export class UsermaintenanceComponent implements OnInit {
     private ubigeoService: UbigeoService,
     private regionService: RegionService,
     private provinceService: ProvinceService,
-    private router: Router
-  ) { 
-    
-  }
-
-  ngOnInit(): void {
-    
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location
+  ) {
     this.libeyUserForm = this.fb.group({
       documentNumber: ['', Validators.required],
-      documentTypeId: ['',Validators.required],
+      documentTypeId: [[], Validators.required],
       name: ['', Validators.required],
       fathersLastName: ['', Validators.required],
       mothersLastName: ['', Validators.required],
       address: ['', Validators.required],
-      regionCode: ['',Validators.required],
-      provinceCode: [ '',Validators.required],
-      ubigeoCode: ['',Validators.required],
+      regionCode: [[], Validators.required],
+      provinceCode: [{ value: [], disabled: true }, Validators.required],
+      ubigeoCode: [{ value: [], disabled: true }, Validators.required],
       phone: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required]],
       active: [true]
     });
+  }
+
+  ngOnInit(): void {
+    this.documentNumber = this.route.snapshot.queryParamMap.get('documentNumber')
+    if (this.documentNumber) {
+      this.isEditMode = true;
+      this.loadUserData();
+    }
+
     this.loadDocumentTypes();
     this.loadRegions();
   }
 
-  // Métodos de carga
+  loadUserData(): void {
+    this.libeyUserService.Find(this.documentNumber!).subscribe(
+      (response: any) => {
+        if (response.datos) {
+          this.libeyUserForm.patchValue(response.datos);
+
+          this.libeyUserForm.get('provinceCode')?.enable();
+          this.libeyUserForm.get('ubigeoCode')?.enable();
+
+          const regionCode = response.datos.regionCode;
+          const provinceCode = response.datos.provinceCode;
+          const ubigeoCode = response.datos.ubigeoCode;
+
+          this.selectedRegionCode = regionCode
+          this.selectedProvinceCode = provinceCode
+          this.selectedUbigeoCode = ubigeoCode
+
+          this.loadRegions();
+          this.loadProvince(regionCode);
+          this.loadUbigeo(regionCode, provinceCode);
+        }
+      },
+      (error) => {
+        swal.fire('Error', 'No se pudo cargar la información del usuario.', 'error');
+      }
+    );
+  }
+
   loadDocumentTypes(): void {
     this.documentTypeService.FindAll().subscribe(
       (response: any) => {
@@ -89,20 +124,38 @@ export class UsermaintenanceComponent implements OnInit {
     );
   }
 
+  loadProvince(region: string): void {
+    this.provinceService.GetByRegion(region).subscribe(
+      (response: any) => {
+        this.provinces = response.datos;
+      },
+      (error) => {
+        swal.fire('Error', 'No se pudieron cargar las provincias.', 'error');
+      }
+    );
+  }
+
+  loadUbigeo(region: string, province: string): void {
+    this.ubigeoService.GetByRegionAndProvince(region, province).subscribe(
+      (response: any) => {
+        this.ubigeos = response.datos;
+      },
+      (error) => {
+        swal.fire('Error', 'No se pudieron cargar los Ubigeos.', 'error');
+      }
+    );
+  }
+
   onRegionChange(selectedRegion: any): void {
     const regionCode = selectedRegion.regionCode
-    
-    this.provinces = []
-    this.ubigeos = []
-
 
     this.provinceService.GetByRegion(regionCode).subscribe(
       (response: any) => {
         this.provinces = response.datos;
-        this.libeyUserForm.controls['provinceCode'].setValue('');
-        this.libeyUserForm.controls['ubigeoCode'].setValue('');
-        this.provinceDisabled = false;
-    this.ubigeoDisabled = true
+        this.libeyUserForm.controls['provinceCode'].setValue([]);
+        this.libeyUserForm.controls['ubigeoCode'].setValue([]);
+        this.libeyUserForm.get('provinceCode')?.enable();
+        this.libeyUserForm.get('ubigeoCode')?.disable();
         this.selectedRegionCode = regionCode
       },
       (error) => {
@@ -114,14 +167,12 @@ export class UsermaintenanceComponent implements OnInit {
   onProvinceChange(selectedProvince: any): void {
     const regionCode = selectedProvince.regionCode
     const provinceCode = selectedProvince.provinceCode
-    
     this.ubigeos = []
-
     this.ubigeoService.GetByRegionAndProvince(regionCode, provinceCode).subscribe(
       (response: any) => {
         this.ubigeos = response.datos;
-        this.libeyUserForm.controls['ubigeoCode'].setValue('');
-        this.ubigeoDisabled = false;
+        this.libeyUserForm.controls['ubigeoCode'].setValue([]);
+        this.libeyUserForm.get('ubigeoCode')?.enable();
         this.selectedProvinceCode = provinceCode
       },
       (error) => {
@@ -131,44 +182,54 @@ export class UsermaintenanceComponent implements OnInit {
   }
 
   submit(): void {
-    console.log(this.libeyUserForm)
     if (this.libeyUserForm.valid) {
-      const user: LibeyUser = this.libeyUserForm.value;
-
-      this.libeyUserService.Create(user);
-      swal.fire('Success', 'Usuario Creado Exitosamente', 'success');
-          this.Clear();
+      if (this.isEditMode) {
+        const userData = this.libeyUserForm.value;
+        this.libeyUserService.Update(userData.documentNumber, userData).subscribe(
+          response => {
+            this.Clear();
+            swal.fire('Success', 'Usuario Actualizado Exitosamente', 'success').then(() => {
+              this.return();
+            });
+          },
+          error => {
+            swal.fire('Oops!', 'Error al actualizar el usuario', 'error');
+          }
+        );
+      } else {
+        const userData = this.libeyUserForm.value;
+        this.libeyUserService.Create(userData).subscribe(
+          response => {
+            this.Clear();
+            swal.fire('Success', 'Usuario Creado Exitosamente', 'success').then(() => {
+              this.return();
+            });
+          },
+          error => {
+            swal.fire('Oops!', 'Error al crear usuario', 'error');
+          }
+        );
+      }
     } else {
       swal.fire('Oops!', 'Por favor, complete todos los campos obligatorios.', 'error');
     }
   }
 
   Clear(): void {
-    // Restablece los valores del formulario a su estado inicial
     this.libeyUserForm.reset();
-  
-    // Limpia las listas relacionadas
+
     this.provinces = [];
     this.ubigeos = [];
-  
-    // Deshabilita los controles dependientes
+
     this.libeyUserForm.controls['provinceCode'].disable();
     this.libeyUserForm.controls['ubigeoCode'].disable();
-  
-    // Restablece los flags de deshabilitación
+
     this.provinceDisabled = true;
     this.ubigeoDisabled = true;
   }
-  
-  
-
-
-
 
   return(): void {
-    this.router.navigate(['/user/card']);
+    this.location.back();
   }
-  
-  
 }
 

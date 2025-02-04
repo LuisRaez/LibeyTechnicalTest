@@ -10,7 +10,7 @@ export class DocumenttypeService {
 
   private baseUrl = `${environment.pathLibeyTechnicalTest}api/DocumentType`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   Find(DocumentTypeId: number): Observable<any> {
     const uri = `${this.baseUrl}/${DocumentTypeId}`;

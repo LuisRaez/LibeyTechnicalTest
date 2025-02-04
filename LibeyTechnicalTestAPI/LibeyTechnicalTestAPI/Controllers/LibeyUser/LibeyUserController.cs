@@ -40,15 +40,15 @@ namespace LibeyTechnicalTestAPI.Controllers.LibeyUser
         {
              
             try 
-            {
+                {
                 bool respuesta = _aggregate.Create(command);
 
                     if (!respuesta)
                 {
-                    return BadRequest("No se pudo crear el usuario.");
+                    return BadRequest(new { message = "No se pudo crear el usuario." });
                 }
 
-                return Ok("Usuario creado correctamente.");
+                return Ok(new { message = "Usuario creado correctamente." });
                 
             }
             catch (Exception ex)
@@ -110,10 +110,10 @@ namespace LibeyTechnicalTestAPI.Controllers.LibeyUser
 
                 if (!respuesta)
                 {
-                    return BadRequest("No se pudo eliminar el usuario.");
+                    return BadRequest(new { message = "No se pudo eliminar el usuario." });
                 }
 
-                return Ok("Usuario eliminado correctamente.");
+                return Ok(new { message = "Usuario eliminado correctamente." });
             }
             catch (Exception ex)
             {

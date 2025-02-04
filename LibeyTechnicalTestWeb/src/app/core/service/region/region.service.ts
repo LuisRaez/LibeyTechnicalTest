@@ -9,7 +9,7 @@ import { environment } from "../../../../environments/environment";
 export class RegionService {
   private baseUrl = `${environment.pathLibeyTechnicalTest}api/Region/`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   FindResponse(RegionCode: string): Observable<any> {
     const uri = `${this.baseUrl}${RegionCode}`;

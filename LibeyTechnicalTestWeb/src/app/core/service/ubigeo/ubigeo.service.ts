@@ -9,7 +9,7 @@ import { environment } from "../../../../environments/environment";
 export class UbigeoService {
   private baseUrl = `${environment.pathLibeyTechnicalTest}api/Ubigeo/`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   FindResponse(UbigeoId: string): Observable<any> {
     const uri = `${this.baseUrl}${UbigeoId}`;
